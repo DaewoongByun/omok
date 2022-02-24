@@ -111,8 +111,9 @@ function checkGameEnd(r, c, turn) {
   const dr = [-1, -1, -1, 0, 1, 1, 1, 0];
   const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
   const counts = dr.map((_, i) => count(r, c, dr[i], dc[i], turn, 0));
+  console.log(counts);
   for (let i = 0; i < 4; i++) {
-    if (counts[i] + counts[7 - i] === 4) {
+    if (counts[i] + counts[i + 4] === 4) {
       setTimeout(() => {
         alert(`${turn === 1 ? "흑" : "백"} 승`);
         initPan();
