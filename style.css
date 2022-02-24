@@ -57,25 +57,77 @@ body {
   width: 40px;
   height: 40px;
   border-radius: 100%;
+
+  z-index: 999;
+}
+
+.real-al {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  /* transform: translate(calc(-50% - 1px), calc(-50% - 1px)); */
+  z-index: 1099;
+}
+
+.real-al-black {
   background-color: black;
-  opacity: 0.5;
-  transform: translate(calc(-50% - 1px), calc(-50% - 1px));
-  top: 0;
+}
+
+.real-al-white {
+  background-color: white;
+}
+
+.al-black:after {
+  background-color: black;
+}
+.al-white:after {
+  background-color: white;
+}
+
+.al-transparent:after {
+  opacity: 0.7;
 }
 
 .al0-0:after {
   top: 0;
   left: 0;
+  transform: translate(calc(-50% - 1px), calc(-50% - 2px));
 }
 .al100-0:after {
   top: 100%;
   left: 0;
+  transform: translate(calc(-50% - 1px), calc(-50%));
 }
 .al100-100:after {
   top: 100%;
   left: 100%;
+  transform: translate(calc(-50% + 1px), calc(-50%));
 }
 .al0-100:after {
   top: 0;
   left: 100%;
+  transform: translate(calc(-50% + 1px), calc(-50% - 2px));
+}
+
+.real-al0-0 {
+  top: 0;
+  left: 0;
+  transform: translate(calc(-50% - 1px), calc(-50% - 2px));
+}
+.real-al100-0 {
+  top: 100%;
+  left: 0;
+  transform: translate(calc(-50% - 1px), calc(-50%));
+}
+.real-al100-100 {
+  top: 100%;
+  left: 100%;
+  transform: translate(calc(-50% + 1px), calc(-50%));
+}
+.real-al0-100 {
+  top: 0;
+  left: 100%;
+  transform: translate(calc(-50% + 1px), calc(-50% - 2px));
 }
