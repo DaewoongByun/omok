@@ -1,7 +1,7 @@
 const kans = Array.from(new Array(18), (_, r) =>
   Array.from(new Array(18), (_, c) => `r${r}c${c}`)
 );
-const spaces = Array.from(new Array(19), (_, r) =>
+let spaces = Array.from(new Array(19), (_, r) =>
   Array.from(new Array(19), (_, c) => 0)
 );
 const kanSize = 40;
@@ -31,6 +31,11 @@ function getTopLeft(event) {
 
 function initPan() {
   const pan = document.querySelector("#pan");
+  pan.innerHTML = "";
+  spaces = Array.from(new Array(19), (_, r) =>
+    Array.from(new Array(19), (_, c) => 0)
+  );
+  turn = 1;
   kans.forEach((arr, r) => {
     const line = document.createElement(`div`);
     line.id = `line${r}`;
@@ -86,6 +91,35 @@ function addMouseClickEvent() {
       turn = turn === 1 ? 2 : 1;
     }
   });
+}
+
+function checkGameEnd(r, c, turn) {
+  function count(r, c, dr, dc, turn, curCount) {
+    const nr = r + dr;
+    const nc = c + dc;
+    if (
+      nr >= 0 &&
+      nr < spaces.length &&
+      nc >= 0 &&
+      nc < spaces[0].length &&
+      spaces[nr][nc] === turn
+    ) {
+      return count(nr, nc, dr, dc, turn, curCount + 1);
+    }
+    return curCount;
+  }
+  const dr = [-1, -1, -1, 0, 1, 1, 1, 0];
+  const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
+  const counts = dr.map((_, i) => count(r, c, dr[i], dc[i], turn, 0));
+  for (let i = 0; i < 4; i++) {
+    if (counts[i] + counts[7 - i] === 4) {
+      setTimeout(() => {
+        alert(`${turn === 1 ? "흑" : "백"} 승`);
+        initPan();
+      }, 100);
+      break;
+    }
+  }
 }
 
 initPan();
