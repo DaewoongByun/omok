@@ -34,19 +34,48 @@ body {
 }
 
 .kan {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   border: 1px solid black;
   position: relative;
 }
 
 .dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 100%;
   position: absolute;
   background-color: black;
   bottom: 0;
   right: 0;
   transform: translate(calc(50% + 1px), calc(50% + 1px));
+}
+
+.al:after {
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 100%;
+  background-color: black;
+  opacity: 0.5;
+  transform: translate(calc(-50% - 1px), calc(-50% - 1px));
+  top: 0;
+}
+
+.al0-0:after {
+  top: 0;
+  left: 0;
+}
+.al100-0:after {
+  top: 100%;
+  left: 0;
+}
+.al100-100:after {
+  top: 100%;
+  left: 100%;
+}
+.al0-100:after {
+  top: 0;
+  left: 100%;
 }

@@ -1,9 +1,10 @@
-const $ = (query) => document.querySelector(query);
 const spaces = Array.from(new Array(18), (_, r) =>
   Array.from(new Array(18), (_, c) => `r${r}c${c}`)
 );
+const kanSize = 40;
+
 function initPan() {
-  const pan = $("#pan");
+  const pan = document.querySelector("#pan");
   spaces.forEach((arr, r) => {
     const line = document.createElement(`div`);
     line.id = `line${r}`;
@@ -25,9 +26,27 @@ function initPan() {
     pan.appendChild(line);
   });
 }
-
-// 2,2   2,8    2,14
-// 8,2   8,8    8,14
-// 14,2  14,8   14,14
+function addMouseOverEvent() {
+  document.querySelector("#pan").addEventListener("mousemove", (e) => {
+    if (e.target.classList.contains("kan")) {
+      let top = 0;
+      let left = 0;
+      const [x, y] = [e.layerX, e.layerY];
+      if (x >= 0 && y >= 0) {
+        if (x < kanSize / 2) left = 0;
+        else left = 100;
+        if (y < kanSize / 2) top = 0;
+        else top = 100;
+        e.target.className = `kan al al${top}-${left}`;
+      }
+    }
+  });
+  document.querySelector("#pan").addEventListener("mouseout", (e) => {
+    if (e.target.classList.contains("kan")) {
+      e.target.className = `kan`;
+    }
+  });
+}
 
 initPan();
+addMouseOverEvent();
