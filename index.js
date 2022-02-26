@@ -162,11 +162,8 @@ function checkRules(r, c, turn) {
   for (let i = 0; i < 4; i++) {
     countLine[i] = {
       count: counts[i].count + counts[i + 4].count,
-      blockedCount: counts[i].isBlocked
-        ? 1
-        : 0 + counts[i + 4].isBlocked
-        ? 1
-        : 0,
+      blockedCount:
+        (counts[i].isBlocked ? 1 : 0) + (counts[i + 4].isBlocked ? 1 : 0),
     };
   }
   // 33 체크
