@@ -1,6 +1,6 @@
 # 오목게임
 
-- https://daewoongbyun.github.io/omok/
+-
 
 ## 구현할것
 
