@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import OmokPan from "../components/OmokPan";
 
 export default function Multi() {
-  const [turn, setTurn] = useState<number>(1);
+  const [turn, setTurn] = useState<number>(2);
   const [pan, setPan] = useState<Array<Array<number>>>(
     Array.from(new Array(19), () => Array.from(new Array(19), () => 0))
   );
@@ -10,7 +10,7 @@ export default function Multi() {
   return (
     <>
       <div>
-        <OmokPan pan={pan} />
+        <OmokPan pan={pan} turn={turn} />
       </div>
       <style jsx>
         {`

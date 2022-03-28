@@ -1,13 +1,15 @@
 type OmokPanProps = {
   pan: Array<Array<number>>;
+  turn: number;
 };
 
 type LineProps = {
   line: Array<number>;
   idx: number;
+  turn: number;
 };
 
-function Line({ line, idx }: LineProps) {
+function Line({ line, idx, turn }: LineProps) {
   return (
     <>
       <div className="line">
@@ -20,7 +22,15 @@ function Line({ line, idx }: LineProps) {
               borderRight: idx !== 18 && i === 17 ? "2px solid black" : "",
               borderTop: i !== 18 ? "2px solid black" : "",
             }}
-          ></div>
+          >
+            {turn === 1 ? (
+              <div className="black dol"></div>
+            ) : turn === 2 ? (
+              <div className="white dol"></div>
+            ) : (
+              <div className="binkan"></div>
+            )}
+          </div>
         ))}
       </div>
 
@@ -32,6 +42,18 @@ function Line({ line, idx }: LineProps) {
           width: 50px;
           height: 50px;
         }
+        .binkan {
+          width: 50px;
+          height: 50px;
+          border-radius: 100%;
+          position: absolute;
+          transform: translate(calc(-50% - 1px), calc(-50% - 1px));
+          opacity: 0.7;
+          z-index: 9999;
+        }
+        .binkan:hover {
+          background-color: ${turn === 1 ? "black" : "white"};
+        }
         .dot::after {
           content: "";
           display: inline-block;
@@ -42,17 +64,30 @@ function Line({ line, idx }: LineProps) {
           border-radius: 100%;
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
         }
+        .dol {
+          width: 50px;
+          height: 50px;
+          border-radius: 100%;
+          position: absolute;
+          transform: translate(calc(-50% - 1px), calc(-50% - 1px));
+        }
+        .black {
+          background-color: black;
+        }
+        .white {
+          background-color: white;
+        }
       `}</style>
     </>
   );
 }
 
-export default function OmokPan({ pan }: OmokPanProps) {
+export default function OmokPan({ pan, turn }: OmokPanProps) {
   return (
     <>
       <div className="pan">
         {pan.map((line: Array<number>, i: number) => (
-          <Line line={line} idx={i} key={i} />
+          <Line line={line} idx={i} turn={turn} key={i} />
         ))}
       </div>
       <style jsx>{`
