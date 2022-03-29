@@ -1,19 +1,21 @@
 type OmokPanProps = {
   pan: Array<Array<number>>;
   turn: number;
+  onClick: Function;
 };
 
 type LineProps = {
   line: Array<number>;
   idx: number;
   turn: number;
+  onClick: Function;
 };
 
-function Line({ line, idx, turn }: LineProps) {
+function Line({ line, idx, turn, onClick }: LineProps) {
   return (
     <>
       <div className="line">
-        {line.map((turn, i) => (
+        {line.map((num, i) => (
           <div
             key={i}
             className={i % 6 === 3 && idx % 6 === 3 ? "kan dot" : "kan"}
@@ -23,12 +25,15 @@ function Line({ line, idx, turn }: LineProps) {
               borderTop: i !== 18 ? "2px solid black" : "",
             }}
           >
-            {turn === 1 ? (
+            {num === 1 ? (
               <div className="black dol"></div>
-            ) : turn === 2 ? (
+            ) : num === 2 ? (
               <div className="white dol"></div>
             ) : (
-              <div className="binkan"></div>
+              <div
+                className="binkan"
+                onClick={() => onClick(idx, i, turn)}
+              ></div>
             )}
           </div>
         ))}
@@ -50,6 +55,7 @@ function Line({ line, idx, turn }: LineProps) {
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
           opacity: 0.7;
           z-index: 9999;
+          cursor: pointer;
         }
         .binkan:hover {
           background-color: ${turn === 1 ? "black" : "white"};
@@ -70,6 +76,7 @@ function Line({ line, idx, turn }: LineProps) {
           border-radius: 100%;
           position: absolute;
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
+          z-index: 9999;
         }
         .black {
           background-color: black;
@@ -82,12 +89,12 @@ function Line({ line, idx, turn }: LineProps) {
   );
 }
 
-export default function OmokPan({ pan, turn }: OmokPanProps) {
+export default function OmokPan({ pan, turn, onClick }: OmokPanProps) {
   return (
     <>
       <div className="pan">
         {pan.map((line: Array<number>, i: number) => (
-          <Line line={line} idx={i} turn={turn} key={i} />
+          <Line line={line} idx={i} turn={turn} onClick={onClick} key={i} />
         ))}
       </div>
       <style jsx>{`
