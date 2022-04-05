@@ -1,7 +1,22 @@
 const dr = [-1, -1, -1, 0, 1, 1, 1, 0];
 const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
 
-export function checkGameEnd(pan, r, c, turn) {
+interface CountType {
+  count: number;
+  isBlocked: Boolean;
+}
+
+interface CountLineType {
+  count: number;
+  blockedCount: number;
+}
+
+export function checkGameEnd(
+  pan: Array<Array<number>>,
+  r: number,
+  c: number,
+  turn: number
+): any {
   function count(r, c, dr, dc, turn, curCount) {
     const nr = r + dr;
     const nc = c + dc;
@@ -26,36 +41,19 @@ export function checkGameEnd(pan, r, c, turn) {
   return false;
 }
 
-export function checkRules(pan, r, c, turn) {
+export function checkRules(
+  pan: Array<Array<number>>,
+  r: number,
+  c: number,
+  turn: number
+): any {
   if (turn === 2) return false;
-  function count(r, c, dr, dc, turn, curCount, blankCount) {
-    const nr = r + dr;
-    const nc = c + dc;
-    if (nr >= 0 && nr < pan.length && nc >= 0 && nc < pan[0].length) {
-      if (pan[nr][nc] === turn)
-        return count(nr, nc, dr, dc, turn, curCount + 1, blankCount);
-      else if (pan[nr][nc] === 0) {
-        if (blankCount === 0)
-          return count(nr, nc, dr, dc, turn, curCount, blankCount + 1);
-        else return { count: curCount, isBlocked: false };
-      } else {
-        if (pan[r][c] === 0) {
-          return {
-            count: curCount,
-            isBlocked: false,
-          };
-        } else {
-          return {
-            count: curCount,
-            isBlocked: true,
-          };
-        }
-      }
-    }
-    return { count: curCount, isBlocked: true };
-  }
-  const counts = dr.map((_, i) => count(r, c, dr[i], dc[i], turn, 0, 0));
-  const countLine = [{}, {}, {}, {}];
+
+  const counts = dr.map((_, i) => count(pan, r, c, dr[i], dc[i], turn, 0, 0));
+  const countLine: Array<CountLineType> = Array.from(new Array(4), () => ({
+    count: 0,
+    blockedCount: 0,
+  }));
   for (let i = 0; i < 4; i++) {
     countLine[i] = {
       count: counts[i].count + counts[i + 4].count,
@@ -89,4 +87,40 @@ export function checkRules(pan, r, c, turn) {
     return "흑은 6목을 놓을 수 없습니다.";
   }
   return false;
+}
+
+export function count(
+  pan: Array<Array<number>>,
+  r: number,
+  c: number,
+  dr: number,
+  dc: number,
+  turn: number,
+  curCount: number,
+  blankCount: number
+): CountType {
+  const nr = r + dr;
+  const nc = c + dc;
+  if (nr >= 0 && nr < pan.length && nc >= 0 && nc < pan[0].length) {
+    if (pan[nr][nc] === turn)
+      return count(pan, nr, nc, dr, dc, turn, curCount + 1, blankCount);
+    else if (pan[nr][nc] === 0) {
+      if (blankCount === 0)
+        return count(pan, nr, nc, dr, dc, turn, curCount, blankCount + 1);
+      else return { count: curCount, isBlocked: false };
+    } else {
+      if (pan[r][c] === 0) {
+        return {
+          count: curCount,
+          isBlocked: false,
+        };
+      } else {
+        return {
+          count: curCount,
+          isBlocked: true,
+        };
+      }
+    }
+  }
+  return { count: curCount, isBlocked: true };
 }

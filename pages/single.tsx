@@ -41,7 +41,7 @@ export default function Multi() {
       newPan[r][c] = turn;
       setPan(newPan);
       setTurn(3 - turn);
-    }, 1000);
+    }, 0);
   }
 
   function handleClick(r: number, c: number, turn: number) {
