@@ -41,6 +41,13 @@ export default function Multi() {
       newPan[r][c] = turn;
       setPan(newPan);
       setTurn(3 - turn);
+      const endCheckResult = checkGameEnd(pan, r, c, turn);
+
+      if (endCheckResult) {
+        alert(endCheckResult);
+        init();
+        return;
+      }
     }, 0);
   }
 
@@ -55,8 +62,7 @@ export default function Multi() {
     const endCheckResult = checkGameEnd(pan, r, c, turn);
 
     if (endCheckResult) {
-      const result = alert(endCheckResult);
-      console.log(result);
+      alert(endCheckResult);
       init();
       return;
     }

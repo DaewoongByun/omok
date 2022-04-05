@@ -26,8 +26,7 @@ export default function Multi() {
     const endCheckResult = checkGameEnd(pan, r, c, turn);
 
     if (endCheckResult) {
-      const result = alert(endCheckResult);
-      console.log(result);
+      alert(endCheckResult);
       init();
       return;
     }

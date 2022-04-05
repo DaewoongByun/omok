@@ -112,7 +112,7 @@ export function count(
       if (pan[r][c] === 0) {
         return {
           count: curCount,
-          isBlocked: false,
+          isBlocked: curCount === 0 ? true : false,
         };
       } else {
         return {
