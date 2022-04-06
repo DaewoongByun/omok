@@ -1,6 +1,6 @@
 # 오목게임
 
--
+- https://omok.vercel.app/
 
 ## 구현할것
 
