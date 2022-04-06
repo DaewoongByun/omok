@@ -47,7 +47,7 @@ export default function Multi() {
 
     if (endCheckResult) {
       setTimeout(() => {
-        alert(endCheckResult);
+        alert("당신은 패배했습니다 🤣🤣🤣🤣");
         init();
       }, 100);
       return;
@@ -61,7 +61,7 @@ export default function Multi() {
 
     if (endCheckResult) {
       setTimeout(() => {
-        alert(endCheckResult);
+        alert("당신이 이겼습니다 😄😄😄😄");
         init();
       }, 100);
       setPan(newPan);
