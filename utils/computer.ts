@@ -147,8 +147,6 @@ function getMaxScoreLocation(scorePan: Array<Array<number>>): Array<number> {
       }
     }
   }
-  console.log(maxScore);
-  console.log(maxLocations);
   const randomIndex = Math.floor(Math.random() * maxLocations.length);
   return maxLocations[randomIndex];
 }

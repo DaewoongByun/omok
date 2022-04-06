@@ -17,57 +17,64 @@ export default function Multi() {
     init();
   }, []);
 
-  useEffect(() => {
-    if (turn === computer) computerDo();
-  }, [turn]);
+  // useEffect(() => {
+  //   if (turn === computer) computerDo();
+  // }, [turn]);
 
   const router = useRouter();
 
   function init() {
     setTurn(1);
-    setPan(Array.from(new Array(19), () => Array.from(new Array(19), () => 0)));
+    const newPan = Array.from(new Array(19), () =>
+      Array.from(new Array(19), () => 0)
+    );
+    setPan(newPan);
     computer = Math.floor(Math.random() * 2 + 1);
     user = 3 - computer;
     if (1 === computer) {
-      computerDo();
+      computerDo(newPan, 1);
     }
-    alert(`당신은 ${user === 1 ? "흑" : "백"}입니다.`);
+    // alert(`당신은 ${user === 1 ? "흑" : "백"}입니다.`);
   }
 
-  function computerDo() {
-    setTimeout(() => {
-      const [r, c] = getNext(pan, turn);
-      const newPan = pan.map((line) => line.map((t) => t));
-      newPan[r][c] = turn;
-      setPan(newPan);
-      setTurn(3 - turn);
-      const endCheckResult = checkGameEnd(pan, r, c, turn);
+  function computerDo(pan: any, turn: any) {
+    const [r, c] = getNext(pan, turn);
+    const newPan = pan.map((line) => line.map((t) => t));
+    newPan[r][c] = turn;
+    setPan(newPan);
+    setTurn(3 - turn);
+    const endCheckResult = checkGameEnd(pan, r, c, turn);
 
-      if (endCheckResult) {
+    if (endCheckResult) {
+      setTimeout(() => {
         alert(endCheckResult);
         init();
-        return;
-      }
-    }, 0);
+      }, 100);
+      return;
+    }
   }
 
   function handleClick(r: number, c: number, turn: number) {
     const newPan = pan.map((line) => line.map((t) => t));
     newPan[r][c] = turn;
+    const endCheckResult = checkGameEnd(pan, r, c, turn);
+
+    if (endCheckResult) {
+      setTimeout(() => {
+        alert(endCheckResult);
+        init();
+      }, 100);
+      setPan(newPan);
+      return;
+    }
     const ruleCheckResult = checkRules(pan, r, c, turn);
     if (ruleCheckResult) {
       alert(ruleCheckResult);
       return;
     }
-    const endCheckResult = checkGameEnd(pan, r, c, turn);
-
-    if (endCheckResult) {
-      alert(endCheckResult);
-      init();
-      return;
-    }
     setPan(newPan);
     setTurn(3 - turn);
+    computerDo(newPan, 3 - turn);
   }
 
   return (
