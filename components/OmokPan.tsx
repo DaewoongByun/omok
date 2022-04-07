@@ -84,6 +84,79 @@ function Line({ line, idx, turn, onClick }: LineProps) {
         .white {
           background-color: white;
         }
+
+        @media screen and (max-width: 1000px) {
+          .kan {
+            width: 40px;
+            height: 40px;
+          }
+          .binkan {
+            width: 40px;
+            height: 40px;
+          }
+          .dot::after {
+            width: 10px;
+            height: 10px;
+          }
+          .dol {
+            width: 40px;
+            height: 40px;
+          }
+        }
+        @media screen and (max-width: 800px) {
+          .kan {
+            width: 30px;
+            height: 30px;
+          }
+          .binkan {
+            width: 30px;
+            height: 30px;
+          }
+          .dot::after {
+            width: 8px;
+            height: 8px;
+          }
+          .dol {
+            width: 30px;
+            height: 30px;
+          }
+        }
+        @media screen and (max-width: 600px) {
+          .kan {
+            width: 20px;
+            height: 20px;
+          }
+          .binkan {
+            width: 20px;
+            height: 20px;
+          }
+          .dot::after {
+            width: 6px;
+            height: 6px;
+          }
+          .dol {
+            width: 20px;
+            height: 20px;
+          }
+        }
+        @media screen and (max-width: 400px) {
+          .kan {
+            width: 18px;
+            height: 18px;
+          }
+          .binkan {
+            width: 18px;
+            height: 18px;
+          }
+          .dot::after {
+            width: 6px;
+            height: 6px;
+          }
+          .dol {
+            width: 18px;
+            height: 18px;
+          }
+        }
       `}</style>
     </>
   );
@@ -102,6 +175,26 @@ export default function OmokPan({ pan, turn, onClick }: OmokPanProps) {
           width: auto;
           padding: 50px 0 0 50px;
           background-color: #e3b24a;
+        }
+        @media screen and (max-width: 1000px) {
+          .pan {
+            padding: 40px 0 0 40px;
+          }
+        }
+        @media screen and (max-width: 800px) {
+          .pan {
+            padding: 30px 0 0 30px;
+          }
+        }
+        @media screen and (max-width: 600px) {
+          .pan {
+            padding: 20px 0 0 20px;
+          }
+        }
+        @media screen and (max-width: 400px) {
+          .pan {
+            padding: 18px 0 0 18px;
+          }
         }
       `}</style>
     </>
