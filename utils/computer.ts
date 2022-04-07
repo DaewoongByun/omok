@@ -77,7 +77,7 @@ function getScore(
             scorePan[r][c] += 1001;
           }
         } else if (countLine[i].blockedCount === 0) {
-          if (countLine[i].count === 3) {
+          if (countLine[i].nearCount === 3) {
             scorePan[r][c] += 10000000;
           } else if (countLine[i].count === 2) {
             scorePan[r][c] += 100000;
