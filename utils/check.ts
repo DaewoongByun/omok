@@ -3,6 +3,7 @@ const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
 
 interface CountType {
   count: number;
+  nearCount: number;
   isBlocked: Boolean;
 }
 
@@ -49,7 +50,9 @@ export function checkRules(
 ): any {
   if (turn === 2) return false;
 
-  const counts = dr.map((_, i) => count(pan, r, c, dr[i], dc[i], turn, 0, 0));
+  const counts = dr.map((_, i) =>
+    count(pan, r, c, dr[i], dc[i], turn, 0, 0, 0)
+  );
   const countLine: Array<CountLineType> = Array.from(new Array(4), () => ({
     count: 0,
     blockedCount: 0,
@@ -97,30 +100,66 @@ export function count(
   dc: number,
   turn: number,
   curCount: number,
+  nearCount: number,
   blankCount: number
 ): CountType {
   const nr = r + dr;
   const nc = c + dc;
   if (nr >= 0 && nr < pan.length && nc >= 0 && nc < pan[0].length) {
-    if (pan[nr][nc] === turn)
-      return count(pan, nr, nc, dr, dc, turn, curCount + 1, blankCount);
-    else if (pan[nr][nc] === 0) {
+    if (pan[nr][nc] === turn) {
       if (blankCount === 0)
-        return count(pan, nr, nc, dr, dc, turn, curCount, blankCount + 1);
-      else return { count: curCount, isBlocked: false };
+        return count(
+          pan,
+          nr,
+          nc,
+          dr,
+          dc,
+          turn,
+          curCount + 1,
+          nearCount + 1,
+          blankCount
+        );
+      else
+        return count(
+          pan,
+          nr,
+          nc,
+          dr,
+          dc,
+          turn,
+          curCount + 1,
+          nearCount,
+          blankCount
+        );
+    } else if (pan[nr][nc] === 0) {
+      if (blankCount === 0)
+        return count(
+          pan,
+          nr,
+          nc,
+          dr,
+          dc,
+          turn,
+          curCount,
+          nearCount,
+          blankCount + 1
+        );
+      else return { count: curCount, nearCount: nearCount, isBlocked: false };
     } else {
       if (pan[r][c] === 0) {
         return {
           count: curCount,
+          nearCount: nearCount,
           isBlocked: curCount === 0 ? true : false,
         };
       } else {
         return {
           count: curCount,
+          nearCount: nearCount,
           isBlocked: true,
         };
       }
     }
   }
-  return { count: curCount, isBlocked: true };
+  return { count: curCount, nearCount: nearCount, isBlocked: true };
 }

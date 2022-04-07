@@ -19,6 +19,7 @@ const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
 
 interface CountLineType {
   count: number;
+  nearCount: number;
   blockedCount: number;
 }
 
@@ -51,15 +52,17 @@ function getScore(
         continue;
       }
       const counts = dr.map((_, i) =>
-        count(pan, r, c, dr[i], dc[i], myTurn, 0, 0)
+        count(pan, r, c, dr[i], dc[i], myTurn, 0, 0, 0)
       );
       const countLine: Array<CountLineType> = Array.from(new Array(4), () => ({
         count: 0,
+        nearCount: 0,
         blockedCount: 0,
       }));
       for (let i = 0; i < 4; i++) {
         countLine[i] = {
           count: counts[i].count + counts[i + 4].count,
+          nearCount: counts[i].nearCount + counts[i + 4].nearCount,
           blockedCount:
             (counts[i].isBlocked ? 1 : 0) + (counts[i + 4].isBlocked ? 1 : 0),
         };
@@ -92,21 +95,22 @@ function getScore(
       if (pan[r][c] !== 0) {
         continue;
       }
-      if (!near(pan, r, c, userTurn)) continue;
       if (checkGameEnd(pan, r, c, userTurn)) {
         scorePan[r][c] = 100000000;
         continue;
       }
       const counts = dr.map((_, i) =>
-        count(pan, r, c, dr[i], dc[i], userTurn, 0, 0)
+        count(pan, r, c, dr[i], dc[i], userTurn, 0, 0, 0)
       );
       const countLine: Array<CountLineType> = Array.from(new Array(4), () => ({
         count: 0,
+        nearCount: 0,
         blockedCount: 0,
       }));
       for (let i = 0; i < 4; i++) {
         countLine[i] = {
           count: counts[i].count + counts[i + 4].count,
+          nearCount: counts[i].nearCount + counts[i + 4].nearCount,
           blockedCount:
             (counts[i].isBlocked ? 1 : 0) + (counts[i + 4].isBlocked ? 1 : 0),
         };
@@ -115,17 +119,17 @@ function getScore(
       for (let i = 0; i < 4; i++) {
         if (countLine[i].blockedCount === 2) continue;
         if (countLine[i].blockedCount === 1) {
-          if (countLine[i].count === 3) {
+          if (countLine[i].nearCount === 3) {
             scorePan[r][c] += 10000;
-          } else if (countLine[i].count === 2) {
+          } else if (countLine[i].nearCount === 2) {
             scorePan[r][c] += 10;
           }
         } else if (countLine[i].blockedCount === 0) {
-          if (countLine[i].count === 3) {
+          if (countLine[i].nearCount === 3) {
             scorePan[r][c] += 1000000;
-          } else if (countLine[i].count === 2) {
+          } else if (countLine[i].nearCount === 2) {
             scorePan[r][c] += 10000;
-          } else if (countLine[i].count === 1) {
+          } else if (countLine[i].nearCount === 1) {
             scorePan[r][c] += 10;
           }
         }
@@ -149,27 +153,6 @@ function getMaxScoreLocation(scorePan: Array<Array<number>>): Array<number> {
   }
   const randomIndex = Math.floor(Math.random() * maxLocations.length);
   return maxLocations[randomIndex];
-}
-
-function near(
-  pan: Array<Array<number>>,
-  r: number,
-  c: number,
-  turn: number
-): Boolean {
-  for (let d = 0; d < 8; d++) {
-    const nr = r + dr[d];
-    const nc = c + dc[d];
-    if (
-      nr >= 0 &&
-      nr < pan.length &&
-      nc >= 0 &&
-      nc < pan.length &&
-      pan[nr][nc] === turn
-    )
-      return true;
-  }
-  return false;
 }
 
 export { getNext };
