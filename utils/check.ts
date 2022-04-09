@@ -49,6 +49,7 @@ export function checkRules(
   turn: number
 ): any {
   if (turn === 2) return false;
+  if (checkGameEnd(pan, r, c, turn)) return false;
 
   const counts = dr.map((_, i) =>
     count(pan, r, c, dr[i], dc[i], turn, 0, 0, 0)
@@ -70,7 +71,7 @@ export function checkRules(
       cur.count === 2 && cur.blockedCount === 0 ? prev + 1 : prev,
     0
   );
-  if (count3 > 1) {
+  if (count3 > 1 && !exceptionCheck(counts)) {
     return "흑은 3 3을 놓을 수 없습니다.";
   }
   // 44 체크
@@ -162,4 +163,21 @@ export function count(
     }
   }
   return { count: curCount, nearCount: nearCount, isBlocked: true };
+}
+
+function exceptionCheck(counts: Array<CountType>) {
+  for (let i = 0; i < 4; i++) {
+    const count1 = counts[i];
+    const count2 = counts[i + 4];
+    if (
+      count1.count === 1 &&
+      count2.count === 1 &&
+      count1.nearCount === 0 &&
+      count2.nearCount === 0 &&
+      !count1.isBlocked &&
+      !count2.isBlocked
+    )
+      return true;
+  }
+  return false;
 }
