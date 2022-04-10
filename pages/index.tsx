@@ -78,7 +78,7 @@ export default function Multi() {
       gameEnd = true;
       game.winner = "computer";
       game.winnerTurn = turn;
-      recordGame(game);
+      // recordGame(game);
       setTimeout(() => {
         alert("당신은 패배했습니다 🤣🤣🤣🤣");
       }, 100);
@@ -97,7 +97,7 @@ export default function Multi() {
       gameEnd = true;
       game.winner = "user";
       game.winnerTurn = turn;
-      recordGame(game);
+      // recordGame(game);
       setTimeout(() => {
         alert("당신이 이겼습니다 😄😄😄😄");
       }, 100);
