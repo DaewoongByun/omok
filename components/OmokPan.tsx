@@ -44,12 +44,12 @@ function Line({ line, idx, turn, onClick }: LineProps) {
           display: flex;
         }
         .kan {
-          width: 50px;
-          height: 50px;
+          width: 44px;
+          height: 44px;
         }
         .binkan {
-          width: 50px;
-          height: 50px;
+          width: 44px;
+          height: 44px;
           border-radius: 100%;
           position: absolute;
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
@@ -71,8 +71,8 @@ function Line({ line, idx, turn, onClick }: LineProps) {
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
         }
         .dol {
-          width: 50px;
-          height: 50px;
+          width: 44px;
+          height: 44px;
           border-radius: 100%;
           position: absolute;
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
@@ -173,7 +173,7 @@ export default function OmokPan({ pan, turn, onClick }: OmokPanProps) {
       <style jsx>{`
         .pan {
           width: auto;
-          padding: 50px 0 0 50px;
+          padding: 44px 0 0 44px;
           background-color: #e3b24a;
         }
         @media screen and (max-width: 1000px) {
