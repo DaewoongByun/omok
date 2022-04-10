@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getDocs, getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
+import { getAnalytics } from "firebase/analytics";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -9,6 +10,7 @@ const firebaseConfig = {
   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
   appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -40,4 +42,8 @@ export async function getWinningRate() {
   if (userWinCount + computerWinCount === 0) return "0";
   const rate = (computerWinCount / (userWinCount + computerWinCount)) * 100;
   return rate.toFixed(2);
+}
+
+export function setAnalytics() {
+  const analytics = getAnalytics(app);
 }

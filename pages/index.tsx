@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import OmokPan from "../components/OmokPan";
 import { checkGameEnd, checkRules } from "../utils/check";
 import { getNext } from "../utils/computer";
-import { getWinningRate, recordGame } from "../utils/firebase";
+import { getWinningRate, recordGame, setAnalytics } from "../utils/firebase";
 
 interface Record {
   turn: number;
@@ -30,10 +30,11 @@ export default function Multi() {
   const [pan, setPan] = useState<Array<Array<number>>>(
     Array.from(new Array(19), () => Array.from(new Array(19), () => 0))
   );
-  const [winningRate, setWinnigRate] = useState<string>("");
+  const [winningRate, setWinnigRate] = useState<string>("-");
 
   useEffect(() => {
     init();
+    setAnalytics();
   }, []);
 
   function init() {
