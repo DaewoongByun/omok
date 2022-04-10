@@ -3,9 +3,28 @@ import OmokPan from "../components/OmokPan";
 import { checkGameEnd, checkRules } from "../utils/check";
 import { useRouter } from "next/router";
 import { getNext } from "../utils/computer";
+import { recordGame } from "../utils/firebase";
+
+interface Record {
+  turn: number;
+  r: number;
+  c: number;
+}
+
+interface Game {
+  records: Array<Record>;
+  winner: string;
+  winnerTurn: number;
+}
 
 let computer: number;
 let user: number;
+
+let game: Game = {
+  records: [],
+  winner: "",
+  winnerTurn: 0,
+};
 
 export default function Multi() {
   const [turn, setTurn] = useState<number>(1);
@@ -21,9 +40,12 @@ export default function Multi() {
   //   if (turn === computer) computerDo();
   // }, [turn]);
 
-  const router = useRouter();
-
   function init() {
+    game = {
+      records: [],
+      winner: "",
+      winnerTurn: 0,
+    };
     setTurn(1);
     const newPan = Array.from(new Array(19), () =>
       Array.from(new Array(19), () => 0)
@@ -40,12 +62,16 @@ export default function Multi() {
   function computerDo(pan: any, turn: any) {
     const [r, c] = getNext(pan, turn);
     const newPan = pan.map((line) => line.map((t) => t));
+    game.records.push({ turn: turn, r: r, c: c });
     newPan[r][c] = turn;
     setPan(newPan);
     setTurn(3 - turn);
     const endCheckResult = checkGameEnd(pan, r, c, turn);
 
     if (endCheckResult) {
+      game.winner = "computer";
+      game.winnerTurn = turn;
+      recordGame(game);
       setTimeout(() => {
         alert("당신은 패배했습니다 🤣🤣🤣🤣");
         init();
@@ -58,8 +84,12 @@ export default function Multi() {
     const newPan = pan.map((line) => line.map((t) => t));
     newPan[r][c] = turn;
     const endCheckResult = checkGameEnd(pan, r, c, turn);
+    game.records.push({ turn: turn, r: r, c: c });
 
     if (endCheckResult) {
+      game.winner = "user";
+      game.winnerTurn = turn;
+      recordGame(game);
       setTimeout(() => {
         alert("당신이 이겼습니다 😄😄😄😄");
         init();
@@ -82,7 +112,6 @@ export default function Multi() {
       <div className="container">
         <div className="buttons">
           <button onClick={init}>새 게임</button>
-          <button onClick={() => router.back()}>뒤로가기</button>
         </div>
         <OmokPan pan={pan} turn={turn} onClick={handleClick} />
       </div>
