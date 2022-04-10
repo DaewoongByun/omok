@@ -77,6 +77,7 @@ function Line({ line, idx, turn, onClick }: LineProps) {
           position: absolute;
           transform: translate(calc(-50% - 1px), calc(-50% - 1px));
           z-index: 9999;
+          box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
         }
         .black {
           background-color: black;
