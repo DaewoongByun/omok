@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getDocs, getFirestore } from "firebase/firestore";
 import { collection, addDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -23,8 +23,21 @@ export async function recordGame(game) {
       winner: game.winner,
       winnerTurn: game.winnerTurn,
     });
-    console.log("Document written with ID: ", docRef.id);
-  } catch (e) {
-    console.error("Error adding document: ", e);
-  }
+  } catch (e) {}
+}
+
+export async function getWinningRate() {
+  const games = await getDocs(collection(db, "games"));
+  let userWinCount = 0;
+  let computerWinCount = 0;
+  games.forEach((doc) => {
+    if (doc.data().winner === "computer") {
+      computerWinCount++;
+    } else if (doc.data().winner === "user") {
+      userWinCount++;
+    }
+  });
+  if (userWinCount + computerWinCount === 0) return "0";
+  const rate = (computerWinCount / (userWinCount + computerWinCount)) * 100;
+  return rate.toFixed(2);
 }

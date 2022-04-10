@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import OmokPan from "../components/OmokPan";
 import { checkGameEnd, checkRules } from "../utils/check";
-import { useRouter } from "next/router";
 import { getNext } from "../utils/computer";
-import { recordGame } from "../utils/firebase";
+import { getWinningRate, recordGame } from "../utils/firebase";
 
 interface Record {
   turn: number;
@@ -31,14 +30,11 @@ export default function Multi() {
   const [pan, setPan] = useState<Array<Array<number>>>(
     Array.from(new Array(19), () => Array.from(new Array(19), () => 0))
   );
+  const [winningRate, setWinnigRate] = useState<string>("");
 
   useEffect(() => {
     init();
   }, []);
-
-  // useEffect(() => {
-  //   if (turn === computer) computerDo();
-  // }, [turn]);
 
   function init() {
     game = {
@@ -56,7 +52,12 @@ export default function Multi() {
     if (1 === computer) {
       computerDo(newPan, 1);
     }
-    // alert(`당신은 ${user === 1 ? "흑" : "백"}입니다.`);
+    fetchWinningRate();
+  }
+
+  async function fetchWinningRate() {
+    const winnigRate = await getWinningRate();
+    setWinnigRate(winnigRate);
   }
 
   function computerDo(pan: any, turn: any) {
@@ -112,6 +113,7 @@ export default function Multi() {
       <div className="container">
         <div className="buttons">
           <button onClick={init}>새 게임</button>
+          <span>컴퓨터 승률 : {winningRate}%</span>
         </div>
         <OmokPan pan={pan} turn={turn} onClick={handleClick} />
       </div>
