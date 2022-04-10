@@ -1,3 +1,4 @@
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import OmokPan from "../components/OmokPan";
 import { checkGameEnd, checkRules } from "../utils/check";
@@ -111,6 +112,11 @@ export default function Multi() {
 
   return (
     <>
+      <Head>
+        <title>인간지능 오목봇</title>
+        <meta name="description" content="인간지능 오목봇" />
+        <meta name="keywords" content="오목,오목봇,omok" />
+      </Head>
       <div className="container">
         <div className="buttons">
           <button onClick={init}>새 게임</button>
