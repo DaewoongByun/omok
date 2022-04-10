@@ -25,6 +25,8 @@ let game: Game = {
   winnerTurn: 0,
 };
 
+let gameEnd: boolean = false;
+
 export default function Multi() {
   const [turn, setTurn] = useState<number>(1);
   const [pan, setPan] = useState<Array<Array<number>>>(
@@ -54,6 +56,7 @@ export default function Multi() {
       computerDo(newPan, 1);
     }
     fetchWinningRate();
+    gameEnd = false;
   }
 
   async function fetchWinningRate() {
@@ -62,6 +65,7 @@ export default function Multi() {
   }
 
   function computerDo(pan: any, turn: any) {
+    if (gameEnd) return;
     const [r, c] = getNext(pan, turn);
     const newPan = pan.map((line) => line.map((t) => t));
     game.records.push({ turn: turn, r: r, c: c });
@@ -71,30 +75,31 @@ export default function Multi() {
     const endCheckResult = checkGameEnd(pan, r, c, turn);
 
     if (endCheckResult) {
+      gameEnd = true;
       game.winner = "computer";
       game.winnerTurn = turn;
       recordGame(game);
       setTimeout(() => {
         alert("당신은 패배했습니다 🤣🤣🤣🤣");
-        init();
       }, 100);
       return;
     }
   }
 
   function handleClick(r: number, c: number, turn: number) {
+    if (gameEnd) return;
     const newPan = pan.map((line) => line.map((t) => t));
     newPan[r][c] = turn;
     const endCheckResult = checkGameEnd(pan, r, c, turn);
     game.records.push({ turn: turn, r: r, c: c });
 
     if (endCheckResult) {
+      gameEnd = true;
       game.winner = "user";
       game.winnerTurn = turn;
       recordGame(game);
       setTimeout(() => {
         alert("당신이 이겼습니다 😄😄😄😄");
-        init();
       }, 100);
       setPan(newPan);
       return;
@@ -106,7 +111,9 @@ export default function Multi() {
     }
     setPan(newPan);
     setTurn(3 - turn);
-    computerDo(newPan, 3 - turn);
+    setTimeout(() => {
+      computerDo(newPan, 3 - turn);
+    }, 200);
   }
 
   return (
