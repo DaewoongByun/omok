@@ -1,21 +1,33 @@
 // 컴퓨터 로직 정리
 
 // 우선순위
-// 5 놓기 ()
-// 상대 5막기 (100000000)
-// 열린 4 놓기 (10000000)
-// 상대 열린 4 막기 (1000000)
-// 막힌 4 (100001), 열린 3 놓기 (100000)
-// 상대 열린 3, 막힌 4 막기 (10000)
-// 막힌 3 (1001), 열린 2 놓기 (1000)
-// 막힌 2, 열린 1 놓기 (100) (x)
-// 상대 열린 2, 막힌 3 막기 (10)
-// 상대 막힌 2 막기 (1)
+
+/* 무조건 하는거 */
+// 5 놓기 (0)
+// 상대 4막기 (1)
+// 열린 4 놓기 (2)
+/*****************/
+
+// 막힌 4 놓기 (3)
+// 상대 열린 3 막기 (4)
+// 열린 3 놓기 (5)
+
+// 상대 막힌 3 막기 (5)
+// 상대 열린 2 막기 (6)
+
+// 막힌 3 놓기 (7)
+// 열린 2 놓기 (7)
+// 막힌 2 놓기 (8)
+// 상대 열린 1 막기 (8)
+// 막힌 2 막기 (8)
+// 상대 막힌 1 막기 (9)
 
 import { count, checkGameEnd, checkRules } from "./check";
 
 const dr = [-1, -1, -1, 0, 1, 1, 1, 0];
 const dc = [-1, 0, 1, 1, 1, 0, -1, -1];
+
+const scores = Array.from(new Array(20), (_, i) => Math.pow(10, i)).reverse();
 
 interface CountLineType {
   count: number;
@@ -40,15 +52,15 @@ function getScore(
   for (let r = 0; r < pan.length; r++) {
     for (let c = 0; c < pan.length; c++) {
       if (pan[r][c] !== 0) {
-        scorePan[r][c] = -10000000;
+        scorePan[r][c] = -scores[0];
         continue;
       }
       if (checkGameEnd(pan, r, c, myTurn)) {
-        scorePan[r][c] = Number.MAX_VALUE;
-        break;
+        scorePan[r][c] = scores[0];
+        return;
       }
       if (checkRules(pan, r, c, myTurn)) {
-        scorePan[r][c] = -10000000;
+        scorePan[r][c] = -scores[0];
         continue;
       }
       const counts = dr.map((_, i) =>
@@ -71,18 +83,23 @@ function getScore(
       for (let i = 0; i < 4; i++) {
         if (countLine[i].blockedCount === 2) continue;
         if (countLine[i].blockedCount === 1) {
+          // 막힌 4
           if (countLine[i].count === 3) {
-            scorePan[r][c] += 100001;
+            scorePan[r][c] += scores[3];
+            // 막힌 3
           } else if (countLine[i].count === 2) {
-            scorePan[r][c] += 1001;
+            scorePan[r][c] += scores[7];
           }
         } else if (countLine[i].blockedCount === 0) {
+          // 열린 4
           if (countLine[i].nearCount === 3) {
-            scorePan[r][c] += 10000000;
+            scorePan[r][c] += scores[2];
+            // 열린 3
           } else if (countLine[i].count === 2) {
-            scorePan[r][c] += 100000;
+            scorePan[r][c] += scores[5];
+            // 열린 2
           } else if (countLine[i].count === 1) {
-            scorePan[r][c] += 1000;
+            scorePan[r][c] += scores[7];
           }
         }
       }
@@ -96,7 +113,7 @@ function getScore(
         continue;
       }
       if (checkGameEnd(pan, r, c, userTurn)) {
-        scorePan[r][c] = 100000000;
+        scorePan[r][c] = scores[1];
         continue;
       }
       const counts = dr.map((_, i) =>
@@ -119,18 +136,23 @@ function getScore(
       for (let i = 0; i < 4; i++) {
         if (countLine[i].blockedCount === 2) continue;
         if (countLine[i].blockedCount === 1) {
+          // 막힌 3 막기
           if (countLine[i].nearCount === 3) {
-            scorePan[r][c] += 10000;
+            scorePan[r][c] += scores[5];
+            // 막힌 2 막기
           } else if (countLine[i].nearCount === 2) {
-            scorePan[r][c] += 10;
+            scorePan[r][c] += scores[6];
           }
         } else if (countLine[i].blockedCount === 0) {
+          // 열린 3 막기
           if (countLine[i].nearCount === 3) {
-            scorePan[r][c] += 1000000;
+            scorePan[r][c] += scores[4];
+            // 열린 2 막기
           } else if (countLine[i].nearCount === 2) {
-            scorePan[r][c] += 10000;
+            scorePan[r][c] += scores[6];
+            // 열린 1 막기
           } else if (countLine[i].nearCount === 1) {
-            scorePan[r][c] += 10;
+            scorePan[r][c] += scores[8];
           }
         }
       }
