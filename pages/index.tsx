@@ -32,7 +32,9 @@ export default function Multi() {
   const [pan, setPan] = useState<Array<Array<number>>>(
     Array.from(new Array(19), () => Array.from(new Array(19), () => 0))
   );
-  const [winningRate, setWinnigRate] = useState<string>("-");
+  const [winningRate, setWinningRate] = useState<string>("-");
+  const [blackWinningRate, setBlackWinningRate] = useState<string>("-");
+  const [whtieWinningRate, setWhtieWinningRate] = useState<string>("-");
 
   useEffect(() => {
     init();
@@ -60,8 +62,10 @@ export default function Multi() {
   }
 
   async function fetchWinningRate() {
-    const winnigRate = await getWinningRate();
-    setWinnigRate(winnigRate);
+    const winnigRate: any = await getWinningRate();
+    setWinningRate(winnigRate.total);
+    setBlackWinningRate(winnigRate.black);
+    setWhtieWinningRate(winnigRate.white);
   }
 
   function computerDo(pan: any, turn: any) {
@@ -119,9 +123,11 @@ export default function Multi() {
   return (
     <>
       <div className="container">
-        <div className="buttons">
-          <button onClick={init}>새 게임</button>
+        <button onClick={init}>새 게임</button>
+        <div className="info">
           <span>컴퓨터 승률 : {winningRate}%</span>
+          <span>흑 승률 : {blackWinningRate}%</span>
+          <span>백 승률 : {whtieWinningRate}%</span>
         </div>
         <OmokPan pan={pan} turn={turn} onClick={handleClick} />
       </div>
@@ -136,10 +142,16 @@ export default function Multi() {
             align-items: center;
             justify-content: center;
           }
-          .buttons {
+          .info {
             display: flex;
-            flex-direction: row;
             gap: 20px;
+            text-align: center;
+            font-size: 16px;
+          }
+          @media screen and (max-width: 600px) {
+            .info {
+              font-size: 14px;
+            }
           }
         `}
       </style>

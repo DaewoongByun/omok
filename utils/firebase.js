@@ -32,16 +32,39 @@ export async function getWinningRate() {
   const games = await getDocs(collection(db, "games"));
   let userWinCount = 0;
   let computerWinCount = 0;
+  let blackTotal = 0;
+  let blackWin = 0;
+  let whiteTotal = 0;
+  let whiteWin = 0;
+
   games.forEach((doc) => {
     if (doc.data().winner === "computer") {
       computerWinCount++;
+      if (doc.data().winnerTurn === 1) {
+        blackTotal++;
+        blackWin++;
+      } else {
+        whiteTotal++;
+        whiteWin++;
+      }
     } else if (doc.data().winner === "user") {
       userWinCount++;
+      if (doc.data().winnerTurn === 1) {
+        whiteTotal++;
+      } else {
+        blackTotal++;
+      }
     }
   });
   if (userWinCount + computerWinCount === 0) return "0";
   const rate = (computerWinCount / (userWinCount + computerWinCount)) * 100;
-  return rate.toFixed(2);
+  const blackRate = (blackWin / blackTotal) * 100;
+  const whiteRate = (whiteWin / whiteTotal) * 100;
+  return {
+    total: rate.toFixed(2),
+    black: blackRate.toFixed(2),
+    white: whiteRate.toFixed(2),
+  };
 }
 
 export function setAnalytics() {
