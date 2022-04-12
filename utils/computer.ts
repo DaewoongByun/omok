@@ -138,7 +138,7 @@ function getScore(
       }
 
       if (is43(countLine, false, r, c)) {
-        scorePan[r][c] += scores[4] - scores[5];
+        scorePan[r][c] += scores[5] * 4;
       }
 
       for (let i = 0; i < 4; i++) {
