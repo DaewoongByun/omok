@@ -151,7 +151,7 @@ export function count(
         return {
           count: curCount,
           nearCount: nearCount,
-          isBlocked: curCount === 0 ? true : false,
+          isBlocked: blankCount === 0 ? true : false,
         };
       } else {
         return {
@@ -162,7 +162,9 @@ export function count(
       }
     }
   }
-  return { count: curCount, nearCount: nearCount, isBlocked: true };
+  if (pan[r][c] === 0 && blankCount === 1)
+    return { count: curCount, nearCount: nearCount, isBlocked: false };
+  else return { count: curCount, nearCount: nearCount, isBlocked: true };
 }
 
 function exceptionCheck(counts: Array<CountType>) {

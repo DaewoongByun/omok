@@ -80,6 +80,10 @@ function getScore(
         };
       }
 
+      if (is43(countLine, true, r, c)) {
+        scorePan[r][c] += scores[2] - scores[3];
+      }
+
       for (let i = 0; i < 4; i++) {
         if (countLine[i].blockedCount === 2) continue;
         if (countLine[i].blockedCount === 1) {
@@ -113,8 +117,8 @@ function getScore(
         continue;
       }
       if (checkGameEnd(pan, r, c, userTurn)) {
-        scorePan[r][c] = scores[1];
-        continue;
+        scorePan[r][c] = scores[0];
+        return;
       }
       const counts = dr.map((_, i) =>
         count(pan, r, c, dr[i], dc[i], userTurn, 0, 0, 0)
@@ -131,6 +135,10 @@ function getScore(
           blockedCount:
             (counts[i].isBlocked ? 1 : 0) + (counts[i + 4].isBlocked ? 1 : 0),
         };
+      }
+
+      if (is43(countLine, false, r, c)) {
+        scorePan[r][c] += scores[4] - scores[5];
       }
 
       for (let i = 0; i < 4; i++) {
@@ -175,6 +183,32 @@ function getMaxScoreLocation(scorePan: Array<Array<number>>): Array<number> {
   }
   const randomIndex = Math.floor(Math.random() * maxLocations.length);
   return maxLocations[randomIndex];
+}
+
+function is43(
+  countLine: Array<CountLineType>,
+  isAttack: boolean,
+  r: number,
+  c: number
+): boolean {
+  let count4 = 0;
+  let count3 = 0;
+  if (isAttack) {
+    countLine.forEach((value) => {
+      if (value.count === 3 && value.blockedCount <= 1) count4++;
+      if (value.count === 2 && value.blockedCount === 0) count3++;
+    });
+  } else {
+    countLine.forEach((value) => {
+      if (value.count === 3 && value.blockedCount === 1) count4++;
+      if (value.count === 2 && value.blockedCount === 0) count3++;
+    });
+  }
+  if (count4 >= 1 && count3 >= 1) {
+    console.log("43임 ㅋㅋ");
+    console.log(r, c);
+  }
+  return count4 >= 1 && count3 >= 1;
 }
 
 export { getNext };
