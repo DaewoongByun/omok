@@ -2,16 +2,18 @@ type OmokPanProps = {
   pan: Array<Array<number>>;
   turn: number;
   onClick: Function;
+  lastComputerLocation: Array<number>;
 };
 
 type LineProps = {
   line: Array<number>;
   idx: number;
   turn: number;
+  lastComputerLocation: Array<number>;
   onClick: Function;
 };
 
-function Line({ line, idx, turn, onClick }: LineProps) {
+function Line({ line, idx, turn, lastComputerLocation, onClick }: LineProps) {
   return (
     <>
       <div className="line">
@@ -26,9 +28,23 @@ function Line({ line, idx, turn, onClick }: LineProps) {
             }}
           >
             {num === 1 ? (
-              <div className="black dol"></div>
+              <div
+                className={`black dol ${
+                  idx === lastComputerLocation[0] &&
+                  i === lastComputerLocation[1]
+                    ? "last"
+                    : ""
+                }`}
+              ></div>
             ) : num === 2 ? (
-              <div className="white dol"></div>
+              <div
+                className={`white dol ${
+                  idx === lastComputerLocation[0] &&
+                  i === lastComputerLocation[1]
+                    ? "last"
+                    : ""
+                }`}
+              ></div>
             ) : (
               <div
                 className="binkan"
@@ -84,6 +100,9 @@ function Line({ line, idx, turn, onClick }: LineProps) {
         }
         .white {
           background-color: white;
+        }
+        .last {
+          box-shadow: 0 0 3px 2px rgba(232, 52, 14, 1);
         }
 
         @media screen and (max-width: 1000px) {
@@ -163,12 +182,24 @@ function Line({ line, idx, turn, onClick }: LineProps) {
   );
 }
 
-export default function OmokPan({ pan, turn, onClick }: OmokPanProps) {
+export default function OmokPan({
+  pan,
+  turn,
+  onClick,
+  lastComputerLocation,
+}: OmokPanProps) {
   return (
     <>
       <div className="pan">
         {pan.map((line: Array<number>, i: number) => (
-          <Line line={line} idx={i} turn={turn} onClick={onClick} key={i} />
+          <Line
+            line={line}
+            idx={i}
+            turn={turn}
+            onClick={onClick}
+            lastComputerLocation={lastComputerLocation}
+            key={i}
+          />
         ))}
       </div>
       <style jsx>{`

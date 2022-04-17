@@ -35,6 +35,9 @@ export default function Multi() {
   const [winningRate, setWinningRate] = useState<string>("-");
   const [blackWinningRate, setBlackWinningRate] = useState<string>("-");
   const [whtieWinningRate, setWhtieWinningRate] = useState<string>("-");
+  const [lastComputerLocation, setLastComputerLocation] = useState<
+    Array<number>
+  >([-1, -1]);
 
   useEffect(() => {
     init();
@@ -71,6 +74,7 @@ export default function Multi() {
   function computerDo(pan: any, turn: any) {
     if (gameEnd) return;
     const [r, c] = getNext(pan, turn);
+    setLastComputerLocation([r, c]);
     const newPan = pan.map((line) => line.map((t) => t));
     game.records.push({ turn: turn, r: r, c: c });
     newPan[r][c] = turn;
@@ -129,7 +133,12 @@ export default function Multi() {
           <span>흑 승률 : {blackWinningRate}%</span>
           <span>백 승률 : {whtieWinningRate}%</span>
         </div>
-        <OmokPan pan={pan} turn={turn} onClick={handleClick} />
+        <OmokPan
+          pan={pan}
+          turn={turn}
+          onClick={handleClick}
+          lastComputerLocation={lastComputerLocation}
+        />
       </div>
       <style jsx>
         {`
