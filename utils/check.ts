@@ -10,6 +10,7 @@ interface CountType {
 interface CountLineType {
   count: number;
   blockedCount: number;
+  nearCount: number;
 }
 
 export function checkGameEnd(
@@ -57,12 +58,14 @@ export function checkRules(
   const countLine: Array<CountLineType> = Array.from(new Array(4), () => ({
     count: 0,
     blockedCount: 0,
+    nearCount: 0,
   }));
   for (let i = 0; i < 4; i++) {
     countLine[i] = {
       count: counts[i].count + counts[i + 4].count,
       blockedCount:
         (counts[i].isBlocked ? 1 : 0) + (counts[i + 4].isBlocked ? 1 : 0),
+      nearCount: counts[i].nearCount + counts[i + 4].nearCount,
     };
   }
   // 33 체크
@@ -84,7 +87,7 @@ export function checkRules(
   }
   // 6목 체크
   const count6 = countLine.reduce(
-    (prev, cur) => (cur.count === 5 ? prev + 1 : prev),
+    (prev, cur) => (cur.nearCount === 5 ? prev + 1 : prev),
     0
   );
   if (count6 > 0) {

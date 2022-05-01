@@ -41,7 +41,12 @@ export default function Multi() {
           <button onClick={init}>새 게임</button>
           <button onClick={() => router.back()}>뒤로가기</button>
         </div>
-        <OmokPan pan={pan} turn={turn} onClick={handleClick} />
+        <OmokPan
+          pan={pan}
+          turn={turn}
+          onClick={handleClick}
+          lastComputerLocation={[-1, 0]}
+        />
       </div>
       <style jsx>
         {`
