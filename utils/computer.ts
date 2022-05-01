@@ -12,11 +12,11 @@
 // 상대 열린 3 막기 (4)
 // 열린 3 놓기 (5)
 
-// 상대 막힌 3 막기 (5)
-// 상대 열린 2 막기 (6)
+// 상대 막힌 3 막기 (7)
+// 상대 열린 2 막기 (7)
 
-// 막힌 3 놓기 (7)
-// 열린 2 놓기 (7)
+// 막힌 3 놓기 (6)
+// 열린 2 놓기 (6)
 // 막힌 2 놓기 (8)
 // 상대 열린 1 막기 (8)
 // 막힌 2 막기 (8)
@@ -87,23 +87,26 @@ function getScore(
       for (let i = 0; i < 4; i++) {
         if (countLine[i].blockedCount === 2) continue;
         if (countLine[i].blockedCount === 1) {
-          // 막힌 4
+          // 막힌 4 놓기
           if (countLine[i].count === 3) {
             scorePan[r][c] += scores[3];
-            // 막힌 3
+            // 막힌 3 놓기
           } else if (countLine[i].count === 2) {
-            scorePan[r][c] += scores[7];
+            scorePan[r][c] += scores[6];
+            // 막힌 2 놓기
+          } else if (countLine[i].count === 1) {
+            scorePan[r][c] += scores[8];
           }
         } else if (countLine[i].blockedCount === 0) {
-          // 열린 4
+          // 열린 4 놓기
           if (countLine[i].nearCount === 3) {
             scorePan[r][c] += scores[2];
-            // 열린 3
+            // 열린 3 놓기
           } else if (countLine[i].count === 2) {
             scorePan[r][c] += scores[5];
-            // 열린 2
+            // 열린 2 놓기
           } else if (countLine[i].count === 1) {
-            scorePan[r][c] += scores[7];
+            scorePan[r][c] += scores[6];
           }
         }
       }
@@ -146,10 +149,10 @@ function getScore(
         if (countLine[i].blockedCount === 1) {
           // 막힌 3 막기
           if (countLine[i].nearCount === 3) {
-            scorePan[r][c] += scores[5];
+            scorePan[r][c] += scores[7];
             // 막힌 2 막기
           } else if (countLine[i].nearCount === 2) {
-            scorePan[r][c] += scores[6];
+            scorePan[r][c] += scores[8];
           }
         } else if (countLine[i].blockedCount === 0) {
           // 열린 3 막기
@@ -157,7 +160,7 @@ function getScore(
             scorePan[r][c] += scores[4];
             // 열린 2 막기
           } else if (countLine[i].nearCount === 2) {
-            scorePan[r][c] += scores[6];
+            scorePan[r][c] += scores[7];
             // 열린 1 막기
           } else if (countLine[i].nearCount === 1) {
             scorePan[r][c] += scores[8];
